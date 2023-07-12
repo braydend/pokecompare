@@ -28,7 +28,7 @@
 
 <main>
   <h1>Pick your favourite pokemon!</h1>
-
+  <div class="container">
   <div class="comparison">
     {#await randomPokemonPromise}
       <div>Loading...</div>  
@@ -46,10 +46,16 @@
     {/await}
   </div>
   <Leaderboard pokemon={leaderboard} />
+</div>
 
 </main>
 
 <style>
+  .container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
+  
   .comparison {
     display: grid;
     grid-template-columns: 1fr 1fr;
