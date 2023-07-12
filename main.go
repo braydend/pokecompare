@@ -43,6 +43,8 @@ func main() {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
 		}
+
+		w.Header().Add("Access-Control-Allow-Origin", "*")
 		w.Write(resp)
 	})
 
