@@ -2,14 +2,19 @@
   import Leaderboard from "./lib/Leaderboard.svelte";
   import Pokemon from "./lib/Pokemon.svelte";
 
-  let randomPokemonPromise = fetch("/random-pokemon").then(resp => resp.json())
-  let randomPokemonPromise2 = fetch("/random-pokemon").then(resp => resp.json())
+  let generateMatchupPromise = fetch("http://localhost:8000/generate-matchup", { 
+    method: "POST",  
+    body: JSON.stringify({previousIds: []})
+  }).then(resp => resp.json())
 
   let leaderboard = [];
 
   function shufflePokemon() {
-    randomPokemonPromise = fetch("/random-pokemon").then(resp => resp.json())
-    randomPokemonPromise2 = fetch("/random-pokemon").then(resp => resp.json())
+    const payload = leaderboard.length >= 20 ? {previousIds: leaderboard.map(({ ID}) => ID)} : {previousIds: []}
+    generateMatchupPromise = fetch("http://localhost:8000/generate-matchup", {
+      method: "POST", 
+      body: JSON.stringify(payload)
+    }).then(resp => resp.json())
   }
 
   function addPokemonToLeaderboard(pokemon) {
@@ -30,18 +35,14 @@
   <h1>Pick your favourite pokemon!</h1>
   <div class="container">
   <div class="comparison">
-    {#await randomPokemonPromise}
+    {#await generateMatchupPromise}
       <div>Loading...</div>  
-    {:then pokemon}
-      <div on:click={() => addPokemonToLeaderboard(pokemon)}>
-        <Pokemon pokemon={pokemon} />
+    {:then data}
+      <div on:click={() => addPokemonToLeaderboard(data.PokemonOne)}>
+        <Pokemon pokemon={data.PokemonOne} />
       </div>
-    {/await}
-    {#await randomPokemonPromise2}
-    <div>Loading...</div>  
-    {:then pokemon}
-      <div on:click={() => addPokemonToLeaderboard(pokemon)}>
-        <Pokemon pokemon={pokemon} />
+      <div on:click={() => addPokemonToLeaderboard(data.PokemonTwo)}>
+        <Pokemon pokemon={data.PokemonTwo} />
       </div>
     {/await}
   </div>

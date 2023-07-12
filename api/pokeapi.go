@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"math/rand"
 	"net/http"
 )
@@ -112,13 +113,14 @@ type PokemonResponse struct {
 
 const POKEMON_COUNT = 1010
 
-func GetRandomPokemon() (pokemon PokemonResponse, err error) {
-	randomId := rand.Intn(POKEMON_COUNT)
-	resp, err := http.Get(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d/", randomId))
+func GetPokemonById(id int) (pokemon PokemonResponse, err error) {
+	log.Default().Println("Looking up pokemon by id")
+	resp, err := http.Get(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d/", id))
 
 	if err != nil {
 		return PokemonResponse{}, fmt.Errorf("Failed to fetch pokemon data. %s", err)
 	}
+	log.Default().Println("Found pokemon by id")
 
 	body, err := io.ReadAll(resp.Body)
 
@@ -139,4 +141,11 @@ func GetRandomPokemon() (pokemon PokemonResponse, err error) {
 	}
 
 	return pokemon, nil
+
+}
+
+func GetRandomPokemon() (pokemon PokemonResponse, err error) {
+	randomId := rand.Intn(POKEMON_COUNT)
+
+	return GetPokemonById(randomId)
 }
