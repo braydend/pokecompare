@@ -17,6 +17,8 @@ type RandomPokemonResponse struct {
 }
 
 func main() {
+	fs := http.FileServer(http.Dir("./web/dist"))
+
 	http.HandleFunc("/random-pokemon", func(w http.ResponseWriter, r *http.Request) {
 		pokemon, err := api.GetRandomPokemon()
 		if err != nil {
@@ -41,8 +43,12 @@ func main() {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
 		}
+
+		w.Header().Add("Access-Control-Allow-Origin", "*")
 		w.Write(resp)
 	})
+
+	http.Handle("/", fs)
 
 	http.ListenAndServe(PORT, nil)
 }
