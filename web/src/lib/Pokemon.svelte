@@ -10,7 +10,7 @@
  </div>
 
  <style>
-    .pokemon {
+  .pokemon {
     display: flex;
     flex-direction: column;
     border: 1px solid white;
