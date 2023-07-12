@@ -2,7 +2,7 @@
   import Leaderboard from "./lib/Leaderboard.svelte";
   import Pokemon from "./lib/Pokemon.svelte";
 
-  let generateMatchupPromise = fetch("http://localhost:8000/generate-matchup", { 
+  let generateMatchupPromise = fetch("/generate-matchup", { 
     method: "POST",  
     body: JSON.stringify({previousIds: []})
   }).then(resp => resp.json())
@@ -11,7 +11,7 @@
 
   function shufflePokemon() {
     const payload = leaderboard.length >= 20 ? {previousIds: leaderboard.map(({ ID}) => ID)} : {previousIds: []}
-    generateMatchupPromise = fetch("http://localhost:8000/generate-matchup", {
+    generateMatchupPromise = fetch("/generate-matchup", {
       method: "POST", 
       body: JSON.stringify(payload)
     }).then(resp => resp.json())
