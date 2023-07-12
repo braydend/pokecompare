@@ -2,14 +2,14 @@
   import Leaderboard from "./lib/Leaderboard.svelte";
   import Pokemon from "./lib/Pokemon.svelte";
 
-  let randomPokemonPromise = fetch("http://localhost:8000/random-pokemon").then(resp => resp.json())
-  let randomPokemonPromise2 = fetch("http://localhost:8000/random-pokemon").then(resp => resp.json())
+  let randomPokemonPromise = fetch("/random-pokemon").then(resp => resp.json())
+  let randomPokemonPromise2 = fetch("/random-pokemon").then(resp => resp.json())
 
   let leaderboard = [];
 
   function shufflePokemon() {
-    randomPokemonPromise = fetch("http://localhost:8000/random-pokemon").then(resp => resp.json())
-    randomPokemonPromise2 = fetch("http://localhost:8000/random-pokemon").then(resp => resp.json())
+    randomPokemonPromise = fetch("/random-pokemon").then(resp => resp.json())
+    randomPokemonPromise2 = fetch("/random-pokemon").then(resp => resp.json())
   }
 
   function addPokemonToLeaderboard(pokemon) {
